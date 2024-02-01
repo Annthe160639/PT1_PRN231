@@ -1,0 +1,70 @@
+﻿@using WebAPI.Models
+
+@model List<DummyDetail>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+
+<form class="modal-body" id="publisherForm" method="post">
+    <div class="row">
+        <div class="col">
+            <div class="mb-1">
+                <label for="detailName" class="form-label">Detail Name</label>
+                <input type="text" class="form-control" name="detailName" id="detailName" placeholder="Detail Name">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-1">
+                <label for="master" class="form-label">Master</label>
+                <select id="masterDropdown" class="form-control">
+                    <option value="">Select Master</option>
+                    @foreach (var master in ViewBag.Master)
+                    {
+                        <option value="@master.MasterName">@master.MasterName</option>
+                    }
+                </select>
+            </div>
+            <input type="text" class="form-control" name="master" id="master" hidden>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button asp-action="Filter" type="submit" class="btn btn-secondary">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Master</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@item.DetailId</td>
+                    <td>@item.DetailName</td>
+                    <td>@item.Master.MasterName</td>
+                </tr>
+        }
+    </tbody>
+</table>
+<p class="text-danger">@ViewBag.Message</p>
+
+
+
+
+<script>
+    document.getElementById("masterDropdown").addEventListener("change", function () {
+        var selectedMasterName = this.value;
+        console.log(selectedMasterName);
+        document.getElementById("master").value = selectedMasterName;
+    });
+</script>
